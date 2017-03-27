@@ -11,11 +11,11 @@ class UserController extends Controller {
     public function add(){
 	$User = M('User');
 	$data['user']=$_POST['name'];
-	$data['pwd']=$_POST['pwd'];
 	$data['email']=$_POST['email'];
+    $data['pwd']=$_POST['pwd'];
     $User->add($data);
     }
-    数据库更改
+    // 数据库更改
     public function update(){
 	$User = M('User');
 	$map['id']=1;
