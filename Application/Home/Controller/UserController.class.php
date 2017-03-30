@@ -16,14 +16,17 @@ class UserController extends Controller {
     $data['email']=$_POST['email'];
     $data['tel']=$_POST['tel'];
     $User->add($data);
+    echo "注册成功";
     }
     //检测用户名是否存在
     public function selectName(){
     $User = M('User');
     $data['name']=$_POST['name'];
     $name=$User->WHERE($data)->select();
-    if($name!=null){
-      echo ture;
+    if($name!=""){
+      echo 1;
+    }else{
+      echo 0;
     }
     }
 

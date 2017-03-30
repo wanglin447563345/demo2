@@ -10,5 +10,5 @@ return array(
 'DB_PREFIX' => 'think_', // 数据库表前缀
 
 // 调试工具
-'SHOW_PAGE_TRACE' =>ture,
+// 'SHOW_PAGE_TRACE' =>ture,
 );

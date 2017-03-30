@@ -7,7 +7,6 @@
 	<link rel="stylesheet" href="style/css.css">
 	<script src="js/jquery-1.8.3.min.js"></script>
 	<script src="js/angular.min.js"></script>
-}
 </head>
 <body ng-app="myApp">
 <div class="container" ng-controller="formCtrl" style="margin-top: 80px;">
@@ -21,8 +20,8 @@
 	     		ng-blur="selectName()"
 	     		required>
 	     		<span class="text-warning" ng-show="myForm.name.$error.required">必填</span>
-	     		<span class="text-danger" ng-show="$scope.user.ssss">用户名已存在</span>
-	     		<span class="text-success" ng-show="myForm.name.$valid">正确</span>
+	     		<span class="text-danger" ng-show="user.show&&myForm.name.$dirty">用户名已存在</span>
+	     		<span class="text-success" ng-show="myForm.name.$valid&&!user.show&&myForm.name.$touched">正确</span>
 	     	</div>
 	     </div>
 	     <div class="form-group">
@@ -77,14 +76,16 @@
 	     	<div class="col-sm-4 col-sm-offset-4">
 	     		<button type="submit" class="btn btn-success" style="width: 100%" 
 	     		ng-click="add()" 
-	     		ng-disabled="myForm.$invalid">提交</button>
+	     		ng-disabled="myForm.$invalid||user.pwd2!=user.pwd||user.show||myForm.$pristine">提交</button>
 	     	</div>
 	     </div>
-     </form>	
+     </form>
+     	<div class="navbar-fixed-middle col-sm-2 block-center"><p class="bg-success" ng-bind="user.success"></p></div>
 </div>
+
 <script>
 var app = angular.module('myApp', []);
-//解决php接收不到问题
+//解决php接收不到问题，这块要注意，angular的一个小坑
  app.config(function($httpProvider) {
  	$httpProvider.defaults.transformRequest = function(obj) {
  		var str = [];
@@ -104,10 +105,9 @@ app.controller('formCtrl', function($scope, $http) {
 		pwd:"",
 		pwd2:"",
 		tel:"",
-		email:"",
-		ssss: false
+		email:""
 	}
-	//检测用户名
+	//检测用户名是否存在
 	$scope.selectName = function() {
 		$http({
 			method: "post",
@@ -115,8 +115,9 @@ app.controller('formCtrl', function($scope, $http) {
 			data: {
 				name:$scope.user.name
 			}	
-		}).then(function(data){
-           	return data
+		}).then(function(res){
+			//后台判断数据库是否存在用户名，存在返回1，不存在返回0
+           	$scope.user.show=res.data*1;//将string转换成number类型，不然绑定到ng-show上一直为真，算是一个坑吧
 		})
 	}
 	//向数据库添加注册信息
@@ -124,9 +125,10 @@ app.controller('formCtrl', function($scope, $http) {
 		$http({
 			method: "post",
 			url: "http://localhost/demo2/index.php/home/user/add",
-			data: $scope.user	
-		}).then(function(data){
-           console.log(data)
+			data: md5($scope.user)	
+		}).then(function(res){
+			console.log(res.data)
+           $scope.user.success=res.data;//后台输出“注册成功”
 		})
 	}
 });
