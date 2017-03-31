@@ -16,7 +16,7 @@ class UserController extends Controller {
     $data['email']=$_POST['email'];
     $data['tel']=$_POST['tel'];
     $User->add($data);
-    echo "注册成功";
+    echo "注册成功,3秒后跳转登录页";
     }
     //检测用户名是否存在
     public function selectName(){
@@ -29,8 +29,18 @@ class UserController extends Controller {
       echo 0;
     }
     }
-
-
+    //检测用户名密码是否一致
+    public function selectPwd(){
+    $User = M('User');
+    $data['name']=$_POST['name'];
+    $data['pwd']=$_POST['pwd'];
+    $name=$User->WHERE($data)->select();
+    if($name!=""){
+      echo 0;
+    }else{
+      echo 1;
+    }
+    }
     // 数据库更改
     public function update(){
 	$User = M('User');
@@ -38,12 +48,6 @@ class UserController extends Controller {
 	$data['user']='dasdas';
     $User->WHERE($map)->save($data);
     }
- //    public function update(){
-	// $User = M('User');
-	// $data['id']=1;
-	// $data['user']='2222';
- //    $User->save($data);
- //    }
     // 删除数据
     public function delete(){
     	$User = M('User');

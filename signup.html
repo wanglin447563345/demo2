@@ -7,9 +7,10 @@
 	<link rel="stylesheet" href="style/css.css">
 	<script src="js/jquery-1.8.3.min.js"></script>
 	<script src="js/angular.min.js"></script>
+	<script src="js/app.js"></script>
 </head>
 <body ng-app="myApp">
-<div class="container" ng-controller="formCtrl" style="margin-top: 80px;">
+<div class="container" ng-controller="logupCtrl" style="margin-top: 80px;">
 <h1 class="text-center" style="margin-bottom: 60px;">用户注册</h1>
      <form class="form-horizontal" name="myForm" novalidate>
 	     <div class="form-group">
@@ -74,64 +75,13 @@
 	     </div>
 	     <div class="form-group">
 	     	<div class="col-sm-4 col-sm-offset-4">
-	     		<button type="submit" class="btn btn-success" style="width: 100%" 
+	     		<button type="submit" class="btn btn-success" id="sub" 
 	     		ng-click="add()" 
 	     		ng-disabled="myForm.$invalid||user.pwd2!=user.pwd||user.show||myForm.$pristine">提交</button>
 	     	</div>
 	     </div>
      </form>
-     	<div class="navbar-fixed-middle col-sm-2 block-center"><p class="bg-success" ng-bind="user.success"></p></div>
+     	<div class="center-block"><p ng-show="user.success!=null" class="success_msg text-center" ng-bind="user.success"></p></div>
 </div>
-
-<script>
-var app = angular.module('myApp', []);
-//解决php接收不到问题，这块要注意，angular的一个小坑
- app.config(function($httpProvider) {
- 	$httpProvider.defaults.transformRequest = function(obj) {
- 		var str = [];
- 		for (var p in obj) {
- 			str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
- 		}
- 		return str.join("&");
- 	};
- 	$httpProvider.defaults.headers.post = {
- 		'Content-Type': 'application/x-www-form-urlencoded'
- 	}
- })
- // 表单数据提交给后台
-app.controller('formCtrl', function($scope, $http) {
-	$scope.user = {
-		name: "",
-		pwd:"",
-		pwd2:"",
-		tel:"",
-		email:""
-	}
-	//检测用户名是否存在
-	$scope.selectName = function() {
-		$http({
-			method: "post",
-			url: "http://localhost/demo2/index.php/home/user/selectName",
-			data: {
-				name:$scope.user.name
-			}	
-		}).then(function(res){
-			//后台判断数据库是否存在用户名，存在返回1，不存在返回0
-           	$scope.user.show=res.data*1;//将string转换成number类型，不然绑定到ng-show上一直为真，算是一个坑吧
-		})
-	}
-	//向数据库添加注册信息
-	$scope.add = function() {
-		$http({
-			method: "post",
-			url: "http://localhost/demo2/index.php/home/user/add",
-			data: md5($scope.user)	
-		}).then(function(res){
-			console.log(res.data)
-           $scope.user.success=res.data;//后台输出“注册成功”
-		})
-	}
-});
-</script>
 </body>
 </html>
