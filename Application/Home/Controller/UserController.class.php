@@ -1,4 +1,4 @@
-<?php
+<?php 
 // 本类由系统自动生成，仅供测试用途
 namespace Home\Controller;
 use Think\Controller;
@@ -20,6 +20,8 @@ class UserController extends Controller {
     }
     //检测用户名是否存在
     public function selectName(){
+        
+    
     $User = M('User');
     $data['name']=$_POST['name'];
     $name=$User->WHERE($data)->select();
@@ -31,8 +33,11 @@ class UserController extends Controller {
     }
     //检测用户名密码是否一致
     public function selectPwd(){
+    // session_start();
+    // $_SESSION['username'] = $_POST['name']; php原生session方法
     $User = M('User');
     $data['name']=$_POST['name'];
+    session('username',$_POST['name']);//thinkphp方法获取用户登录名
     $data['pwd']=$_POST['pwd'];
     $name=$User->WHERE($data)->select();
     if($name!=""){
@@ -41,6 +46,9 @@ class UserController extends Controller {
       echo 1;
     }
     }
+
+
+
     // 数据库更改
     public function update(){
 	$User = M('User');

@@ -12,7 +12,7 @@ var app = angular.module('myApp', []);
  		'Content-Type': 'application/x-www-form-urlencoded'
  	}
  })
- // 表单数据提交给后台
+ // 注册控制器
 app.controller('logupCtrl', function($scope, $http,$timeout,$location) {
 	$scope.user = {
 		name: "",
@@ -42,38 +42,56 @@ app.controller('logupCtrl', function($scope, $http,$timeout,$location) {
 			data: $scope.user	
 		}).then(function(res){
 			console.log(res.data)
-           $scope.user.success=res.data;//后台输出“注册成功”
+           $scope.user.success=res.data;//后台输出“注册成功,3秒后登录”
            $timeout(function() {
-           	window.location.href = "http://localhost/demo2/signin.html";
+           	window.location.href = "http://localhost/demo2";
            }, 3000);
 		})
 	}
 
 });
+// 登录控制器
 app.controller('loginCtrl', function($scope, $http, $timeout, $location) {
 	$scope.user = {
 			name: "",
-			pwd: "",
-			pwd2: "",
-			tel: "",
-			email: ""
+			pwd: ""
 		}
-		//用户登录密码错误
+
+	//检测用户名是否存在
+	$scope.selectName = function() {
+		$http({
+			method: "post",
+			url: "http://localhost/demo2/index.php/home/user/selectName",
+			data: {
+				name: $scope.user.name
+			}
+		}).then(function(res) {
+			//后台判断数据库是否存在用户名，存在返回1，不存在返回0
+			$scope.user.show = res.data * 1; //将string转换成number类型，不然绑定到ng-show上一直为真，算是一个坑吧
+		})
+	}
+	//用户登录密码错误
 	$scope.selectPwd = function() {
-			$http({
-				method: "post",
-				url: "http://localhost/demo2/index.php/home/user/selectPwd",
-				data: {
-					name: $scope.user.name,
-					pwd: $scope.user.pwd,
-				}
-			}).then(function(res) {
-				console.log(res.data);
-				$scope.user.pshow = res.data * 1;
-			})
+		if($scope.user.pwd == ""){
+			$scope.user.required = true;
 		}
-		//登录到首页
+		$http({
+			method: "post",
+			url: "http://localhost/demo2/index.php/home/user/selectPwd",
+			data: {
+				name: $scope.user.name,
+				pwd: $scope.user.pwd,
+			}
+		}).then(function(res) {
+			console.log(res.data);
+			$scope.user.pshow = res.data * 1;
+			if(!(res.data*1)){
+				window.location.href = "http://localhost/demo2/home/index/signin";	
+			}
+		})
+	}
+	//登录到首页
 	$scope.login = function() {
-		window.location.href = "http://localhost/demo2/index.html"
+		window.location.href = "http://localhost/demo2/home/index/signin"
 	}
 });

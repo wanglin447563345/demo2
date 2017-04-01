@@ -3,11 +3,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>登录</title>
-	<link rel="stylesheet" href="style/bootstrap.min.css">
-	<link rel="stylesheet" href="style/css.css">
-	<script src="js/jquery-1.8.3.min.js"></script>
-	<script src="js/angular.min.js"></script>
-	<script src="js/app.js"></script>
+	<link rel="stylesheet" href="__CSS__bootstrap.css">
+	<link rel="stylesheet" href="__CSS__css.css">
+	<script src="__JS__angular.min.js"></script>
+	<script src="__JS__app.js"></script>
 </head>
 <body ng-app="myApp">
 <div class="container" ng-controller="loginCtrl" style="margin-top: 80px;">
@@ -18,10 +17,10 @@
 	     	<div class="col-sm-4">
 	     		<input type="text" class="form-control" name="name" ng-model="user.name" 
 	     		placeholder="请输入您的用户名"
-	     		ng-blur="selectName()"
+	     		ng-change="selectName()"
                 required
 	     		>
-	     		<span class="text-danger" ng-show="!user.show&&myForm.name.$dirty&&user.name!=null&&myForm.name.$touched">用户名不存在,请注册</span>
+	     		<span class="text-danger" ng-show="!user.show&&myForm.name.$dirty&&user.name!=null">用户名不存在,请注册</span>
 	     	</div>
 	     </div>
 	     <div class="form-group">
@@ -30,19 +29,19 @@
 	     		<input type="password" class="form-control" name="pwd" 
 	     		ng-model="user.pwd" 
 	     		placeholder="请输入您的密码"
-                ng-change="selectPwd()"
 	     		required
 	     		>
-	     		<span class="text-danger" ng-show="myForm.pwd.$dirty&&user.pshow&&user.pwd!=null&&myForm.pwd.$touched">输入密码有误</span>
+	     		<span class="text-danger" ng-show="user.required">请输入密码</span>
+	     		<span class="text-danger" ng-show="myForm.pwd.$dirty&&user.pshow||user.pwd==''&&myForm.pwd.$dirty">输入密码有误</span>
 	     	</div>	
 	     </div>
 
 	     <div class="form-group">
 	     	<div class="col-sm-4 col-sm-offset-4">
-	     	   <a href="signup.html" class="btn btn-default">注册</a>
+	     	   <a href="home/index/signup" class="btn btn-default">注册</a>
 	     		<button type="submit" class="btn btn-success" 
-	     		ng-disabled="myForm.$invalid||user.pshow"
-	     		ng-click="login()"
+	     		 ng-click="selectPwd()"
+	     		 ng-disabled="myForm.$invalid"
 	     		>登录</button>
 	     	</div>
 	     </div>

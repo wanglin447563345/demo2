@@ -19,6 +19,11 @@ define('APP_DEBUG',True);
 
 // 定义应用目录
 define('APP_PATH','./Application/');
+// define('__CSS__','./Public/CSS/');
+// 'TMPL_PARSE_STRING'  => array(
+//      '__CSS__'     => '/Public/CSS/', // 增加新的JS类库路径替换规则
+// )
+
 
 // 引入ThinkPHP入口文件
 require './ThinkPHP/ThinkPHP.php';

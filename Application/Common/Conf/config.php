@@ -11,4 +11,12 @@ return array(
 
 // 调试工具
 // 'SHOW_PAGE_TRACE' =>ture,
+
+
+// 配置路径
+'TMPL_PARSE_STRING' => array(
+     '__CSS__' => '/demo2/Public/css/', // 增加新的CSS类库路径替换规则
+     '__JS__' => '/demo2/Public/js/', // 增加新的JS类库路径替换规则
+     '__IMG__' => '/demo2/Public/img/', // 增加新的IMG类库路径替换规则
+)
 );

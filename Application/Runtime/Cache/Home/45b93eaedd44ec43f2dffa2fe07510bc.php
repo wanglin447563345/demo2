@@ -1,13 +1,12 @@
-<!DOCTYPE html>
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>注册</title>
-	<link rel="stylesheet" href="style/bootstrap.min.css">
-	<link rel="stylesheet" href="style/css.css">
-	<script src="js/jquery-1.8.3.min.js"></script>
-	<script src="js/angular.min.js"></script>
-	<script src="js/app.js"></script>
+	<link rel="stylesheet" href="/demo2/Public/css/bootstrap.css">
+	<link rel="stylesheet" href="/demo2/Public/css/css.css">
+	<script src="/demo2/Public/js/angular.min.js"></script>
+	<script src="/demo2/Public/js/app.js"></script>
 </head>
 <body ng-app="myApp">
 <div class="container" ng-controller="logupCtrl" style="margin-top: 80px;">
